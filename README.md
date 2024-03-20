@@ -46,7 +46,7 @@ And in the REPL run the following function:
 ```
 
 This will quit the REPL and create a binary that can be run directly. <br>
-See how to use the resulting program in [Command Line Usage](##command-line-usage).
+See how to use the resulting program in [Command Line Usage](#command-line-usage).
 
 ### Using Inside the REPL
 The function used to list the contents of a directory is dir-contents. <br>
@@ -56,7 +56,7 @@ It's definition is the following:
 (defun dir-contents (&key (path #P"./") (padding 2) max-depth (follow-links nil) (depth 0)) ...)
 ```
 
-The keyword parameters are equivalent to the command line options shown in [Command Line Usage](##command-line-usage).
+The keyword parameters are equivalent to the command line options shown in [Command Line Usage](#command-line-usage).
 
 ## Command Line Usage
 ```
