@@ -36,6 +36,7 @@
 
 (defun error-quit (err &rest args)
   (apply (function format) (cons t (cons (concatenate 'string "ERROR: " err) args)))
+  (format t "try 'lstree --help' for more information.")
   (quit 1))
 
 (defun main ()
