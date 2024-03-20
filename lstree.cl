@@ -3,11 +3,9 @@
     (apply (function format) (cons t (cons text args))) ; if padding <= 0, just call format normally
     (apply (function format) (cons t (cons (format nil "~~~at~a" pad text) args))))) ; otherwise... i wont even attempt to explain
 
-(defun dir-contents (&optional path padding max-depth follow-links depth)
+(defun dir-contents (&key (path #P"./") (padding 2) max-depth (follow-links nil) (depth 0))
   "lists contents of directory in the specified path"
 
-  (setf depth (or depth 0)) ; if depth is nil, set it to 0
-  (setf path  (or path #P"./")) ; if path is nil, set it to the current directory
   (if (and max-depth (> depth max-depth)) (return-from dir-contents)) ; if max-depth was passed, stop
 
   (let* ((contents-path (merge-pathnames path (pathname "*"))) ; = #P"/full/path/*"
@@ -19,7 +17,7 @@
 
     (dolist (dir dirs)
       (format-pad "~a~%" (* depth padding) (enough-namestring (truename dir) (truename path))) ; print name of directory
-      (dir-contents dir padding max-depth follow-links (+ depth 1))))) ; list directory contents
+      (dir-contents :path dir :padding padding :max-depth max-depth :follow-links follow-links :depth (+ depth 1))))) ; list directory contents
 
 (defun print-help ()
   (format t "Usage: lstree [OPTION...] [DIRECTORY...]~%")
@@ -31,8 +29,7 @@
   (format t "  -h, --help~30tshow this help page~%")
   (format t "  -m, --max-depth DEPTH~30tdescend at most DEPTH directories~%")
   (format t "  -f, --follow-links~30tfollow symbolic or hard links and show their directory contents~%")
-  (format t "  -p, --padding VALUE~30tseparate inner files/directories with VALUE spaces~%")
-  )
+  (format t "  -p, --padding VALUE~30tseparate inner files/directories with VALUE spaces~%"))
 
 (defun error-quit (err &rest args)
   (apply (function format) (cons t (cons (concatenate 'string "ERROR: " err) args)))
@@ -40,7 +37,7 @@
   (quit 1))
 
 (defun main ()
-  (let ((paths nil) (padding 2) (max-depth nil) (follow-links nil) (is-padding nil) (is-depth nil))
+  (let ((paths nil) (padding nil) (max-depth nil) (follow-links nil) (is-padding nil) (is-depth nil))
     (dolist (arg (cdr *command-line-argument-list*)) ; parsing arguments
       (cond
         (is-depth
@@ -83,7 +80,7 @@
         (cond
           ((or (not path) (directory path)) ; if its a valid directory
             (if (second paths) (format t "~%~a:~%" (truename path))) ; if theres more than one path, specify which one is being listed
-            (dir-contents path padding max-depth follow-links)) ; list contents
+            (dir-contents :path path :padding padding :max-depth max-depth :follow-links follow-links)) ; list contents
 
           (t (error-quit "Directory not found: '~a'~%" path)))))) ; otherwise, throw error
 
