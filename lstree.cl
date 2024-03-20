@@ -3,9 +3,12 @@
     (apply (function format) (cons t (cons text args))) ; if padding <= 0, just call format normally
     (apply (function format) (cons t (cons (format nil "~~~at~a" pad text) args))))) ; otherwise... i wont even attempt to explain
 
-(defun dir-contents (&key (path #P"./") (padding 2) max-depth (follow-links nil) (depth 0))
+(defun dir-contents (&key path padding max-depth follow-links depth)
   "lists contents of directory in the specified path"
 
+  (setf path    (or path #P"./")) ; default path to current directory
+  (setf padding (or padding 2))   ; default padding to 2
+  (setf depth   (or depth 0))     ; default depth to 0
   (if (and max-depth (> depth max-depth)) (return-from dir-contents)) ; if max-depth was passed, stop
 
   (let* ((contents-path (merge-pathnames path (pathname "*"))) ; = #P"/full/path/*"

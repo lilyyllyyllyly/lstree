@@ -55,10 +55,11 @@ The function used to list the contents of a directory is dir-contents. <br>
 It's definition is the following:
 
 ```lisp
-(defun dir-contents (&key (path #P"./") (padding 2) max-depth (follow-links nil) (depth 0)) ...)
+(defun dir-contents (&key path padding max-depth follow-links depth) ...)
 ```
 
-The keyword parameters are equivalent to the command line options shown in [Command Line Usage](#command-line-usage).
+The keyword parameters are equivalent to the command line options shown in [Command Line Usage](#command-line-usage). <br>
+The path defaults to the current directory and padding defaults to 2.
 
 ## Command Line Usage
 ```
