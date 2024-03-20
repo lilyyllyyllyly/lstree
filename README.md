@@ -46,6 +46,8 @@ And in the REPL run the following function:
 ```
 
 This will quit the REPL and create a binary that can be run directly. <br>
+More information about this function can be found in the [Clozure CL Documentation](https://ccl.clozure.com/docs/ccl.html#saving-applications).
+
 See how to use the resulting program in [Command Line Usage](#command-line-usage).
 
 ### Using Inside the REPL
